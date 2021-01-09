@@ -1,6 +1,8 @@
 package Sudoku.Board;
 
-public class Field {
+import java.io.Serializable;
+
+public class Field implements Serializable {
     private final int solved;
     private int value;
     private boolean isMutable;

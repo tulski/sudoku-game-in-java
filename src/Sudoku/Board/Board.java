@@ -1,9 +1,10 @@
 package Sudoku.Board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Board {
+public class Board implements Serializable {
     // template, right solved sudoku board
     private final int[][] solvedArray = {
             {2, 9, 5, 7, 4, 3, 8, 6, 1},

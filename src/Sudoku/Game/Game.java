@@ -4,6 +4,8 @@ import Sudoku.Board.Board;
 import Sudoku.Board.Difficulty;
 import Sudoku.Cli;
 
+import java.io.*;
+
 public class Game {
     private GameStats gameStats;
     private Board board;
@@ -13,7 +15,7 @@ public class Game {
     }
 
     public void start() {
-        if (Cli.promptStartMenu() ==  "New Game") {
+        if (Cli.promptStartMenu() == "New Game") {
             newGame();
         } else {
             continueGame();
@@ -41,8 +43,15 @@ public class Game {
 
     public void continueGame() {
         // TODO
-        this.board = new Board(Difficulty.EASY);
+        /*this.board = new Board(Difficulty.EASY);*/
         this.gameStats = new GameStats(Difficulty.EASY.getNumOfHints());
+        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("board.brd"))) {
+            this.board = (Board) is.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         playGame();
     }
 
@@ -59,7 +68,17 @@ public class Game {
                 check();
                 break;
             case "Save and exit":
+                saveAndExit();
+                System.exit(1);
                 break;
+        }
+    }
+
+    private void saveAndExit() {
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("board.brd"))) {
+            os.writeObject(this.board);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
