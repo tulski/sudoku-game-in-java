@@ -95,7 +95,7 @@ public class Cli {
 
     public static String promptPlayMenu() {
         return textIO.newStringInputReader()
-                .withNumberedPossibleValues("Guess", "Hint", "Check", "Save and exit")
+                .withNumberedPossibleValues("Guess", "Erase", "Hint", "Check", "Save and exit")
                 .withDefaultValue("Guess")
                 .read();
     }
@@ -108,6 +108,6 @@ public class Cli {
     }
 
     public static void println(String string) {
-         terminal.println(string);
+        terminal.println(string);
     }
 }

@@ -43,13 +43,15 @@ public class Game {
 
     public void continueGame() {
         // TODO
-        /*this.board = new Board(Difficulty.EASY);*/
         this.gameStats = new GameStats(Difficulty.EASY.getNumOfHints());
-        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("board.brd"))) {
+        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("./save/board.brd"))) {
             this.board = (Board) is.readObject();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        }
+        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("./save/gameStats.brd"))) {
+            this.gameStats = (GameStats) is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         playGame();
@@ -60,6 +62,9 @@ public class Game {
         switch (Cli.promptPlayMenu()) {
             case "Guess":
                 guess();
+                break;
+            case "Erase":
+                erase();
                 break;
             case "Hint":
                 hint();
@@ -75,8 +80,13 @@ public class Game {
     }
 
     private void saveAndExit() {
-        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("board.brd"))) {
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("./save/board.brd"))) {
             os.writeObject(this.board);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("./save/gameStats.brd"))) {
+            os.writeObject(this.gameStats);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,10 +100,19 @@ public class Game {
         playGame();
     }
 
+    private void erase() {
+        int row = Cli.prompIntValue("Row", 1, 9);
+        int column = Cli.prompIntValue("Column", 1, 9);
+        this.board.inputValue(row - 1, column - 1, 0);
+        playGame();
+    }
+
     private void hint() {
         if (this.gameStats.getHints() > 0) {
-            this.gameStats.subtractHint();
-            this.board.solveRandomFiled();
+            if (this.board.isAnyEmpty()) {
+                this.gameStats.subtractHint();
+                this.board.solveRandomFiled();
+            }
         }
         playGame();
     }

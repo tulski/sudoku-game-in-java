@@ -98,7 +98,8 @@ public class Board implements Serializable {
     public void solveRandomFiled() {
         int randomRow = new Random().nextInt(8 + 1);
         int randomColumn = new Random().nextInt(8 + 1);
-        if (this.board.get(randomRow).get(randomColumn).isEmpty()) {
+        if (this.board.get(randomRow).get(randomColumn).getIsMutable() &&
+                this.board.get(randomRow).get(randomColumn).isEmpty()) {
             this.board.get(randomRow).get(randomColumn).solve();
         } else {
             solveRandomFiled();
@@ -115,7 +116,15 @@ public class Board implements Serializable {
                 if (!field.isSolved()) return false;
             }
         }
-        return false;
+        return true;
     }
 
+    public boolean isAnyEmpty() {
+        for (ArrayList<Field> row : this.board) {
+            for (Field field : row) {
+                if (field.isEmpty()) return true;
+            }
+        }
+        return false;
+    }
 }
