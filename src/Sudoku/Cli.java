@@ -95,7 +95,7 @@ public class Cli {
 
     public static String promptPlayMenu() {
         return textIO.newStringInputReader()
-                .withNumberedPossibleValues("Guess", "Erase", "Hint", "Check", "Save and exit")
+                .withNumberedPossibleValues("Guess", "Erase", "Hint", "Check", "Save", "Exit")
                 .withDefaultValue("Guess")
                 .read();
     }

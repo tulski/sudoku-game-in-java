@@ -42,18 +42,13 @@ public class Game {
     }
 
     public void continueGame() {
-        // TODO
         this.gameStats = new GameStats(Difficulty.EASY.getNumOfHints());
         try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("./save/board.brd"))) {
             this.board = (Board) is.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("./save/gameStats.brd"))) {
-            this.gameStats = (GameStats) is.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.gameStats = new GameStats(Difficulty.EASY.getNumOfHints());
         playGame();
     }
 
@@ -72,23 +67,12 @@ public class Game {
             case "Check":
                 check();
                 break;
-            case "Save and exit":
-                saveAndExit();
+            case "Save":
+                save();
+                break;
+            case "Exit":
                 System.exit(1);
                 break;
-        }
-    }
-
-    private void saveAndExit() {
-        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("./save/board.brd"))) {
-            os.writeObject(this.board);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("./save/gameStats.brd"))) {
-            os.writeObject(this.gameStats);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -128,6 +112,15 @@ public class Game {
         } else {
             victory();
         }
+    }
+
+    private void save() {
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("./save/board.brd"))) {
+            os.writeObject(this.board);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        playGame();
     }
 
     private void gameOver() {

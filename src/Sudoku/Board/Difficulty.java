@@ -1,8 +1,7 @@
 package Sudoku.Board;
 
 public enum Difficulty {
-//    EASY(36, 10),
-    EASY(80, 10),
+    EASY(36, 10),
     MEDIUM(31,5),
     HARD(26,3);
 
