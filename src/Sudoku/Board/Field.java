@@ -13,6 +13,12 @@ public class Field implements Serializable {
         this.isMutable = true;
     }
 
+    public Field(int value, int solved, boolean isMutable) {
+        this.value = value;
+        this.solved = solved;
+        this.isMutable = isMutable;
+    }
+
     public boolean isEmpty() {
         return this.value == 0;
     }
@@ -31,6 +37,10 @@ public class Field implements Serializable {
         if (isMutable) {
             this.value = value;
         }
+    }
+
+    public int getSolved() {
+        return this.solved;
     }
 
     public int getValue() {

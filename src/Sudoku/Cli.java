@@ -8,6 +8,7 @@ import org.beryx.textio.TextTerminal;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cli {
     private static TextIO textIO;
@@ -28,7 +29,7 @@ public class Cli {
         printBoard(board);
     }
 
-    private static void printLogo() {
+    public static void printLogo() {
         terminal.println("\n ┏━━━┓    ┏┓   ┓     \n" +
                 " ┃┏━┓┃    ┃┃   ┃     \n" +
                 " ┃┗━━┓┓┏┓━┛┃━━┓┃┏┓┓┏┓\n" +
@@ -41,7 +42,7 @@ public class Cli {
         terminal.println("  |1|2|3|4|5|6|7|8|9|");
         for (int i = 0; i < board.toArray().length; i++) {
             terminal.printf(" %d|", i + 1);
-            board.get(i).forEach(field -> printField(field));
+            board.get(i).forEach(Cli::printField);
             terminal.println();
         }
     }
@@ -78,25 +79,10 @@ public class Cli {
         terminal.print("|");
     }
 
-    public static String promptStartMenu() {
-        printLogo();
+    public static String promptMenu(List<String> options) {
         return textIO.newStringInputReader()
-                .withNumberedPossibleValues("New Game", "Continue")
-                .withDefaultValue("New Game")
-                .read();
-    }
-
-    public static String promptDifficultyMenu() {
-        return textIO.newStringInputReader()
-                .withNumberedPossibleValues("Easy", "Medium", "Hard")
-                .withDefaultValue("Easy")
-                .read();
-    }
-
-    public static String promptPlayMenu() {
-        return textIO.newStringInputReader()
-                .withNumberedPossibleValues("Guess", "Erase", "Hint", "Check", "Save", "Exit")
-                .withDefaultValue("Guess")
+                .withNumberedPossibleValues(options)
+                .withDefaultValue(options.get(0))
                 .read();
     }
 

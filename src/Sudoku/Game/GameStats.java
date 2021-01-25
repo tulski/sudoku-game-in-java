@@ -4,6 +4,11 @@ public class GameStats {
     private int lives;
     private int hints;
 
+    public GameStats(int lives, int hints) {
+        this.lives = lives;
+        this.hints = hints;
+    }
+
     public GameStats(int hints) {
         this.lives = 3;
         this.hints = hints;

@@ -25,6 +25,10 @@ public class Board implements Serializable {
         generateBoard();
     }
 
+    public Board() {
+        this.difficulty = null;
+    }
+
     public ArrayList<ArrayList<Field>> getBoard() {
         return this.board;
     }
@@ -126,5 +130,32 @@ public class Board implements Serializable {
             }
         }
         return false;
+    }
+
+    public String mapFieldValuesToString(String valueType) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ArrayList<Field> row : this.board) {
+            for (Field field : row) {
+                if (valueType == "solved") stringBuilder.append(field.getSolved());
+                else if (valueType == "value") stringBuilder.append(field.getValue());
+                else if (valueType == "isMutable") stringBuilder.append(field.getIsMutable() ? 1 : 0);
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public void mapArraysToFieldValues(ArrayList<ArrayList<Integer>> valueArray, ArrayList<ArrayList<Integer>> solvedArray, ArrayList<ArrayList<Integer>> isMutableArray) {
+        ArrayList<ArrayList<Field>> userBoard = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            ArrayList<Field> row = new ArrayList<>();
+            for (int j = 0; j < 9; j++) {
+                Field field = new Field(valueArray.get(i).get(j), solvedArray.get(i).get(j), isMutableArray.get(i).get(j) >= 1);
+                row.add(field);
+            }
+            userBoard.add(row);
+        }
+        this.board = userBoard;
     }
 }
